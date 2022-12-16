@@ -3,34 +3,49 @@ title: "Untitled"
 format: html
 editor: visual
 ---
+
 ## Librerias
 
-```{r cargadata}
+```{r librerias}
+#| echo: true
+#| warning: false
 library(yaml)
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(readr)
 ```
 
 ## Carga de datos
 
+Los datos se han obtenido a partir de la página web: https://www.ine.es/jaxiT3/Tabla.htm?t=31231. 
+
+Estos datos hacen referencia a los resultados por municipios, distritos y secciones censales. Este proyecto tiene como intención representar gráfcamente por sección censal el porcentaje de población de 65 años y más de la comarca del Priorat, que pertenece a la proíncia de Tarragona, dentro de la comunidad autónoma de Catalunya.
+
 ```{r cargadata}
-list2env(read_yaml("tarea-curso-git-github/config/config.yaml"), envir=globalenv())
-x31231 <- read.csv2(file.path(PROJECT, RAW_DTA_FOLDER, "31231.csv"))
-```
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
-```{r}
-1 + 1
-```
-
-You can add options to executable code like this
-
-```{r}
 #| echo: false
-2 * 2
+#| warning: false
+#| message: false
+list2env(read_yaml("config/config.yaml"), envir=globalenv())
+# Datos renda
+x31231 <- read.csv2(file.path(RAW_DTA_FOLDER, "31231.csv"))
+# Datos municipios
+data_municipios <- read_csv(file.path(RAW_DTA_FOLDER, "data_municipios.csv"))
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+## Tratamiento de datos
+
+
+```{r}
+data_renda <- x31231 %>% 
+  mutate(
+    CUSEC = str_extract(Secciones, "[[:digit:]]+"),
+    Total = as.numeric( gsub(",", ".", (gsub(".", "", Total, fixed = TRUE)) ) )
+  ) %>% 
+  filter(nchar(CUSEC) == "10") %>% 
+  filter(Periodo  == "2020") %>% 
+  pivot_wider(names_from = Indicadores.demográficos, values_from = Total) %>% 
+  left_join(data_municipios, by = "CUSEC") %>% 
+  filter(cod_comarca == "29")
+```
+
