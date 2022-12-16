@@ -3,8 +3,18 @@ title: "Untitled"
 format: html
 editor: visual
 ---
+## Librerias
 
-## Quarto
+```{r cargadata}
+library(yaml)
+```
+
+## Carga de datos
+
+```{r cargadata}
+list2env(read_yaml("tarea-curso-git-github/config/config.yaml"), envir=globalenv())
+x31231 <- read.csv2(file.path(PROJECT, RAW_DTA_FOLDER, "31231.csv"))
+```
 
 Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
 
