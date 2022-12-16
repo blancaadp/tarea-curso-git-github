@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "Estudio de la población de la comarca del Priorat"
 format: html
 editor: visual
 ---
@@ -14,11 +14,13 @@ library(dplyr)
 library(tidyr)
 library(stringr)
 library(readr)
+library(ggplot2)
+library(forcats)
 ```
 
 ## Carga de datos
 
-Los datos se han obtenido a partir de la página web: https://www.ine.es/jaxiT3/Tabla.htm?t=31231. 
+Los datos se han obtenido a partir de la página web: https://www.ine.es/jaxiT3/Tabla.htm?t=31231.
 
 Estos datos hacen referencia a los resultados por municipios, distritos y secciones censales. Este proyecto tiene como intención representar gráfcamente por sección censal el porcentaje de población de 65 años y más de la comarca del Priorat, que pertenece a la proíncia de Tarragona, dentro de la comunidad autónoma de Catalunya.
 
@@ -35,7 +37,6 @@ data_municipios <- read_csv(file.path(RAW_DTA_FOLDER, "data_municipios.csv"))
 
 ## Tratamiento de datos
 
-
 ```{r}
 data_renda <- x31231 %>% 
   mutate(
@@ -49,3 +50,22 @@ data_renda <- x31231 %>%
   filter(cod_comarca == "29")
 ```
 
+
+## Creación grafico
+
+```{r}
+data_renda %>% 
+  group_by(nom_municipi) %>% 
+  summarise(pob65 = mean(`Porcentaje de población de 65 y más años`)) %>% 
+  mutate( nom_municipi = fct_reorder(nom_municipi, pob65)) %>% 
+  ggplot(aes(x = nom_municipi, y = pob65)) +
+    geom_segment( aes(xend=nom_municipi, yend=0)) +
+    geom_point( size=4, color="orange") +
+    coord_flip() +
+    theme_bw() +
+    xlab("Municipios") +
+    ylab("% población de 65 años y más") +
+    ggtitle("\nPoblación de 65 años y más en la comarca del Priorat (Tarragona)\n")
+```
+
+Observamos que para esta comarca todos los municipios tienen más del 20% de la población 65 años o más.
