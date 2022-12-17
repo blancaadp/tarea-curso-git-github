@@ -97,3 +97,13 @@ data_edad_media %>%
     ylab("Edad media de la población") +
     ggtitle("\nEdad media de los municipios de la comarca del Priorat (Tarragona)\n")
 ````
+
+
+```{r}
+#| echo: false
+mun_max_ed <- data_edad_media$nom_municipi[which.max(data_edad_media$edad_media)]
+mun_min_ed <- data_edad_media$nom_municipi[which.min(data_edad_media$edad_media)]
+```
+El municipio del Priorat con mayor edad media es `r mun_max_ed`.
+
+El municipio del Priorat con menor edad media es `r mun_min_ed`.
