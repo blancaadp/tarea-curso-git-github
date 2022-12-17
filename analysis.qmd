@@ -73,8 +73,8 @@ Observamos que para esta comarca todos los municipios tienen más del 20% de la 
 
 ```{r}
 #| echo: false
-mun_max <- data_$nom_municipi[which.max(data_renda$pob65)]
-mun_min <- data_renda$nom_municipi[which.min(data_renda$pob65)]
+mun_max <- data_pob65$nom_municipi[which.max(data_pob65$pob65)]
+mun_min <- data_pob65$nom_municipi[which.min(data_pob65$pob65)]
 ```
 El municipio del Priorat con mayor porcentaje de población de 65 años o más es `r mun_max`.
 
