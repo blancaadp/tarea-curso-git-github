@@ -47,17 +47,19 @@ data_renda <- x31231 %>%
   filter(Periodo  == "2020") %>% 
   pivot_wider(names_from = Indicadores.demográficos, values_from = Total) %>% 
   left_join(data_municipios, by = "CUSEC") %>% 
-  filter(cod_comarca == "29")
+  filter(cod_comarca == "29") %>% 
+  group_by(nom_municipi) %>% 
+  summarise(pob65 = mean(`Porcentaje de población de 65 y más años`)) %>% 
+  mutate( nom_municipi = fct_reorder(nom_municipi, pob65))
 ```
-
 
 ## Creación grafico
 
 ```{r}
 data_renda %>% 
-  group_by(nom_municipi) %>% 
-  summarise(pob65 = mean(`Porcentaje de población de 65 y más años`)) %>% 
-  mutate( nom_municipi = fct_reorder(nom_municipi, pob65)) %>% 
+  # group_by(nom_municipi) %>% 
+  # summarise(pob65 = mean(`Porcentaje de población de 65 y más años`)) %>% 
+  # mutate( nom_municipi = fct_reorder(nom_municipi, pob65)) %>% 
   ggplot(aes(x = nom_municipi, y = pob65)) +
     geom_segment( aes(xend=nom_municipi, yend=0)) +
     geom_point( size=4, color="orange") +
@@ -68,4 +70,13 @@ data_renda %>%
     ggtitle("\nPoblación de 65 años y más en la comarca del Priorat (Tarragona)\n")
 ```
 
-Observamos que para esta comarca todos los municipios tienen más del 20% de la población 65 años o más.
+Observamos que para esta comarca todos los municipios tienen más del 20% de la población 65 años o más. 
+
+```{r}
+#| echo: false
+mun_max <- data_renda$nom_municipi[which.max(data_renda$pob65)]
+mun_min <- data_renda$nom_municipi[which.min(data_renda$pob65)]
+```
+El municipio del Priorat con mayor porcentaje de población de 65 años o más es `r mun_max`.
+
+El municipio del Priorat con menor porcentaje de población de 65 años o más es `r mun_min`.
