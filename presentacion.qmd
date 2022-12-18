@@ -1,0 +1,42 @@
+---
+title: "Presentación sobre el proyecto final"
+author: "Blanca Domènech Pellejà"
+format:
+    docx:
+        toc: true
+        toc-depth: 2
+        toc-title: Contenido
+        number-sections: true
+        highlight-style: github
+editor: visual
+---
+
+## Fichero README
+
+![](images/01-readme.png)
+
+## Issue
+
+![](images/02-issue.png)
+
+## Participantes proyecto
+
+![](images/03-collaborators.png)
+
+## Historial de commits
+
+### Visualización en GiHub
+![](images/04-hist-commits.png)
+
+### Visualización en RStudio
+![](images/04-hist-commits.png)
+
+## Documento Quarto y documento word
+
+Este documento con las imágenes se ha creado a partir del documento `r.qmd`.
+
+## Explicación organización
+
+En este caso el proyecto no se ha relizado con colaboración.
+
+En un inicio no se me hacia el merge con la nueva branch creada. Primero quería unir con la branch grafico pero no me funcionaba del todo. Finalmente, he creado una nueva para ver si me salía, y todo a funcionado correctamente.

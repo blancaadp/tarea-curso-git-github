@@ -27,6 +27,7 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 analysis_files
-# No track html files
-*.html
-presentacion_files
+
+
+# No track png files
+*.png
